@@ -1,0 +1,9 @@
+chasquilandingback/*.log
+chasquilandingback/*.pot
+chasquilandingback/*.pyc
+chasquilandingback/__pycache__/
+chasquilandingback/local_settings.py
+chasquilandingback/db.sqlite3
+chasquilandingback/db.sqlite3-journal
+chasquilandingback/media
+chasquilandingback/.env
