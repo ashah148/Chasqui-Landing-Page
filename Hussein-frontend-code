@@ -1,0 +1,840 @@
+// App.js
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  SafeAreaView,
+  StatusBar,
+  Platform,
+} from 'react-native';
+import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+
+export default function App() {
+  const [email, setEmail] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleSubmit = () => {
+    // Email validation using simple regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Invalid Email", "Please enter a valid email address");
+      return;
+    }
+
+    // Here you would typically send the email to your backend
+    // For now, we'll just show a success message
+    Alert.alert(
+      "Success!",
+      "Thank you for joining our waitlist! We'll keep you updated on our progress.",
+      [
+        { 
+          text: "OK", 
+          onPress: () => setEmail('') // Clear the email field on success
+        }
+      ]
+    );
+  };
+
+  const scrollToSection = (sectionId) => {
+    // This would be implemented with proper navigation in a complete app
+    setIsMenuOpen(false);
+  };
+
+  // Placeholder images - in a real app, you'd use actual images
+  const placeholderImage = 'https://via.placeholder.com/400x320';
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
+      
+      {/* Navigation Header */}
+      <View style={styles.header}>
+        <Text style={styles.logoText}>Chasqui</Text>
+        <View style={styles.desktopMenu}>
+          <TouchableOpacity onPress={() => scrollToSection('features')}>
+            <Text style={styles.menuItem}>Features</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => scrollToSection('how-it-works')}>
+            <Text style={styles.menuItem}>How It Works</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => scrollToSection('about')}>
+            <Text style={styles.menuItem}>About</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.waitlistButton}
+            onPress={() => scrollToSection('join-waitlist')}
+          >
+            <Text style={styles.waitlistButtonText}>Join Waitlist</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity 
+          style={styles.mobileMenuButton}
+          onPress={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <Ionicons name={isMenuOpen ? "close" : "menu"} size={28} color="#4F46E5" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Mobile Menu Drawer */}
+      {isMenuOpen && (
+        <View style={styles.mobileMenu}>
+          <TouchableOpacity 
+            style={styles.mobileMenuItem}
+            onPress={() => scrollToSection('features')}
+          >
+            <Text style={styles.mobileMenuItemText}>Features</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.mobileMenuItem}
+            onPress={() => scrollToSection('how-it-works')}
+          >
+            <Text style={styles.mobileMenuItemText}>How It Works</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.mobileMenuItem}
+            onPress={() => scrollToSection('about')}
+          >
+            <Text style={styles.mobileMenuItemText}>About</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.mobileMenuItem, styles.mobileWaitlistButton]}
+            onPress={() => scrollToSection('join-waitlist')}
+          >
+            <Text style={styles.waitlistButtonText}>Join Waitlist</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      
+      <ScrollView style={styles.scrollView}>
+        {/* Hero Section */}
+        <View style={styles.heroSection}>
+          <View style={styles.heroContent}>
+            <Text style={styles.heroTitle}>
+              Take the Work Out of <Text style={styles.highlight}>Networking</Text>
+            </Text>
+            <Text style={styles.heroSubtitle}>
+              Your AI-powered networking companion that helps you build, organize, and leverage your professional connections all in one platform.
+            </Text>
+            <TouchableOpacity 
+              style={styles.heroCTA}
+              onPress={() => scrollToSection('join-waitlist')}
+            >
+              <Text style={styles.heroButtonText}>Join the Waitlist</Text>
+              <Ionicons name="arrow-forward" size={20} color="#ffffff" style={styles.buttonIcon} />
+            </TouchableOpacity>
+          </View>
+          <Image
+            source={{ uri: placeholderImage }}
+            style={styles.heroImage}
+            resizeMode="cover"
+          />
+        </View>
+
+        {/* Problem Statement */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Job Hunting Is Broken</Text>
+          <View style={styles.problemContainer}>
+            <View style={styles.problemContent}>
+              <Text style={styles.paragraph}>
+                Applicants submit countless applications online with one click, only to get lost in the vast pile and never hear back from prospective employers. This makes getting feedback and determining if you're making any progress impossible.
+              </Text>
+              <Text style={styles.paragraph}>
+                <Text style={styles.boldText}>The solution is networking.</Text> 80% of professionals say networking is essential for career success, yet 50% of recent graduates feel unsatisfied with their networking education.
+              </Text>
+              <Text style={styles.paragraph}>
+                The prospect of networking is daunting for many people; they may not have had opportunities to practice and strengthen their networking abilities or never quite honed in on how to reap the benefits efficiently and effectively.
+              </Text>
+            </View>
+            <Image
+              source={{ uri: placeholderImage }}
+              style={styles.sectionImage}
+              resizeMode="cover"
+            />
+          </View>
+        </View>
+
+        {/* Features Section */}
+        <View style={[styles.section, styles.featuresSection]} id="features">
+          <Text style={styles.sectionTitle}>Introducing Chasqui</Text>
+          <Text style={styles.sectionSubtitle}>Your complete networking companion</Text>
+          
+          <View style={styles.featuresContainer}>
+            <View style={styles.featureCard}>
+              <FontAwesome name="network-wired" size={36} color="#4F46E5" />
+              <Text style={styles.featureTitle}>Build Your Network</Text>
+              <Text style={styles.featureDescription}>
+                Seamlessly build, organize, and leverage your network all in one platform. Never lose track of important connections again.
+              </Text>
+            </View>
+            
+            <View style={styles.featureCard}>
+              <FontAwesome name="robot" size={36} color="#4F46E5" />
+              <Text style={styles.featureTitle}>AI-Powered Assistance</Text>
+              <Text style={styles.featureDescription}>
+                Chasqui helps you manage your networks, integrate calendars, contacts, and meeting notes, and generate follow-up responses.
+              </Text>
+            </View>
+            
+            <View style={styles.featureCard}>
+              <FontAwesome name="graduation-cap" size={36} color="#4F46E5" />
+              <Text style={styles.featureTitle}>Educational Content</Text>
+              <Text style={styles.featureDescription}>
+                Access courses and resources to improve your networking skills, especially if you had fewer opportunities during school.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* How It Works */}
+        <View style={[styles.section, styles.howItWorksSection]} id="how-it-works">
+          <Text style={styles.sectionTitle}>How Chasqui Works</Text>
+          <Text style={styles.sectionSubtitle}>We make networking simple and effective</Text>
+          
+          <View style={styles.howItWorksContainer}>
+            <Image
+              source={{ uri: placeholderImage }}
+              style={styles.howItWorksImage}
+              resizeMode="cover"
+            />
+            
+            <View style={styles.stepsContainer}>
+              <View style={styles.step}>
+                <View style={styles.stepIconContainer}>
+                  <FontAwesome name="user-plus" size={20} color="#ffffff" />
+                </View>
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Connect and Organize</Text>
+                  <Text style={styles.stepDescription}>
+                    Import your existing contacts and organize them effectively. Add notes, tags, and reminders for each connection.
+                  </Text>
+                </View>
+              </View>
+              
+              <View style={styles.step}>
+                <View style={styles.stepIconContainer}>
+                  <FontAwesome name="calendar" size={20} color="#ffffff" />
+                </View>
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Schedule and Remember</Text>
+                  <Text style={styles.stepDescription}>
+                    Integrate your calendar for scheduling follow-ups and get reminders when it's time to reconnect with people.
+                  </Text>
+                </View>
+              </View>
+              
+              <View style={styles.step}>
+                <View style={styles.stepIconContainer}>
+                  <FontAwesome name="comment-dots" size={20} color="#ffffff" />
+                </View>
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Follow Up with AI</Text>
+                  <Text style={styles.stepDescription}>
+                    Get AI-generated follow-up messages that are personalized and contextual based on your meeting notes.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* About Section */}
+        <View style={styles.section} id="about">
+          <Text style={styles.sectionTitle}>Our Journey</Text>
+          <Text style={styles.sectionSubtitle}>Where we are and where we're going</Text>
+          
+          <View style={styles.aboutContainer}>
+            <Image
+              source={{ uri: placeholderImage }}
+              style={styles.aboutImage}
+              resizeMode="cover"
+            />
+            
+            <View style={styles.aboutContent}>
+              <Text style={styles.paragraph}>
+                Chasqui is still in the development stage, much like a college student attending their first networking event. We have developed our Minimum Viable Product (MVP) and our website is live at Chasqui.ai.
+              </Text>
+              <Text style={styles.paragraph}>
+                Our team continuously works to improve the platform, considering user feedback and trends while adding integrations and features to enhance the job-hunting experience for all.
+              </Text>
+              <Text style={styles.paragraph}>
+                To tie it all together, we are working on producing our first course, covering networking fundamentals for those just starting.
+              </Text>
+              
+              <View style={styles.techStack}>
+                <View style={styles.techItem}>
+                  <FontAwesome name="code" size={16} color="#4F46E5" />
+                  <Text style={styles.techText}>Front-end: React Native</Text>
+                </View>
+                <View style={styles.techItem}>
+                  <FontAwesome name="server" size={16} color="#4F46E5" />
+                  <Text style={styles.techText}>Back-end: Django</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Waitlist Section */}
+        <View style={styles.waitlistSection} id="join-waitlist">
+          <Text style={styles.waitlistTitle}>Join Our Waitlist</Text>
+          <Text style={styles.waitlistSubtitle}>
+            Be among the first to experience Chasqui when we launch
+          </Text>
+          
+          <View style={styles.formContainer}>
+            <TextInput
+              style={styles.emailInput}
+              placeholder="Enter your email address"
+              placeholderTextColor="#a0aec0"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            
+            <TouchableOpacity 
+              style={styles.submitButton}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.submitButtonText}>Join the Waitlist</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <View style={styles.footerTop}>
+            <View style={styles.footerCompany}>
+              <Text style={styles.footerLogo}>Chasqui</Text>
+              <Text style={styles.footerDescription}>
+                Taking the work out of networking. Your AI-powered companion for building and leveraging your professional network.
+              </Text>
+              <View style={styles.socialLinks}>
+                <TouchableOpacity style={styles.socialIcon}>
+                  <FontAwesome name="twitter" size={20} color="#a0aec0" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.socialIcon}>
+                  <FontAwesome name="linkedin" size={20} color="#a0aec0" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.socialIcon}>
+                  <FontAwesome name="instagram" size={20} color="#a0aec0" />
+                </TouchableOpacity>
+              </View>
+            </View>
+            
+            <View style={styles.footerLinks}>
+              <View style={styles.footerLinkColumn}>
+                <Text style={styles.footerLinkHeader}>Resources</Text>
+                <TouchableOpacity><Text style={styles.footerLink}>Blog</Text></TouchableOpacity>
+                <TouchableOpacity><Text style={styles.footerLink}>FAQs</Text></TouchableOpacity>
+                <TouchableOpacity><Text style={styles.footerLink}>Support</Text></TouchableOpacity>
+              </View>
+              
+              <View style={styles.footerLinkColumn}>
+                <Text style={styles.footerLinkHeader}>Company</Text>
+                <TouchableOpacity><Text style={styles.footerLink}>About</Text></TouchableOpacity>
+                <TouchableOpacity><Text style={styles.footerLink}>Careers</Text></TouchableOpacity>
+                <TouchableOpacity><Text style={styles.footerLink}>Contact</Text></TouchableOpacity>
+                <TouchableOpacity><Text style={styles.footerLink}>Privacy Policy</Text></TouchableOpacity>
+                <TouchableOpacity><Text style={styles.footerLink}>Terms of Service</Text></TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          
+          <View style={styles.footerBottom}>
+            <Text style={styles.copyright}>
+              © 2025 Chasqui. All rights reserved.
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e8f0',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  logoText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#4F46E5',
+  },
+  desktopMenu: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    display: Platform.OS === 'web' ? 'flex' : 'none',
+  },
+  menuItem: {
+    marginLeft: 24,
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#4a5568',
+  },
+  waitlistButton: {
+    marginLeft: 24,
+    backgroundColor: '#4F46E5',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 4,
+  },
+  waitlistButtonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  mobileMenuButton: {
+    display: Platform.OS === 'web' ? 'none' : 'flex',
+  },
+  mobileMenu: {
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e8f0',
+  },
+  mobileMenuItem: {
+    paddingVertical: 10,
+  },
+  mobileMenuItemText: {
+    fontSize: 16,
+    color: '#4a5568',
+  },
+  mobileWaitlistButton: {
+    backgroundColor: '#4F46E5',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 4,
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  
+  // Hero Section
+  heroSection: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 20,
+    paddingTop: 40,
+    paddingBottom: 60,
+    backgroundColor: '#ffffff',
+  },
+  heroContent: {
+    flex: 1,
+    minWidth: 300,
+    marginRight: 20,
+    marginBottom: 20,
+  },
+  heroTitle: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#1a202c',
+    marginBottom: 16,
+  },
+  highlight: {
+    color: '#4F46E5',
+  },
+  heroSubtitle: {
+    fontSize: 18,
+    color: '#4a5568',
+    marginBottom: 24,
+    lineHeight: 28,
+  },
+  heroCTA: {
+    backgroundColor: '#4F46E5',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+  },
+  heroButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  buttonIcon: {
+    marginLeft: 8,
+  },
+  heroImage: {
+    flex: 1,
+    minWidth: 300,
+    height: 320,
+    borderRadius: 8,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+      web: {
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      },
+    }),
+  },
+  
+  // General Section Styles
+  section: {
+    padding: 40,
+  },
+  sectionTitle: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#1a202c',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  sectionSubtitle: {
+    fontSize: 18,
+    color: '#718096',
+    textAlign: 'center',
+    marginBottom: 40,
+  },
+  
+  // Problem Statement
+  problemContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  problemContent: {
+    flex: 1,
+    minWidth: 300,
+    marginRight: 20,
+    marginBottom: 20,
+  },
+  paragraph: {
+    fontSize: 16,
+    color: '#4a5568',
+    marginBottom: 16,
+    lineHeight: 24,
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+  sectionImage: {
+    flex: 1,
+    minWidth: 300,
+    height: 320,
+    borderRadius: 8,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+      web: {
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      },
+    }),
+  },
+  
+  // Features Section
+  featuresSection: {
+    backgroundColor: '#ffffff',
+  },
+  featuresContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginHorizontal: -10,
+  },
+  featureCard: {
+    flex: 1,
+    minWidth: 250,
+    maxWidth: 350,
+    backgroundColor: '#ffffff',
+    padding: 24,
+    borderRadius: 8,
+    margin: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+      web: {
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      },
+    }),
+  },
+  featureTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1a202c',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  featureDescription: {
+    fontSize: 14,
+    color: '#4a5568',
+    lineHeight: 22,
+  },
+  
+  // How It Works Section
+  howItWorksSection: {
+    backgroundColor: '#f7fafc',
+  },
+  howItWorksContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  howItWorksImage: {
+    flex: 1,
+    minWidth: 300,
+    height: 320,
+    borderRadius: 8,
+    marginBottom: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+      web: {
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      },
+    }),
+  },
+  stepsContainer: {
+    flex: 1,
+    minWidth: 300,
+    marginLeft: 20,
+  },
+  step: {
+    flexDirection: 'row',
+    marginBottom: 24,
+  },
+  stepIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#4F46E5',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  stepContent: {
+    flex: 1,
+  },
+  stepTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1a202c',
+    marginBottom: 8,
+  },
+  stepDescription: {
+    fontSize: 14,
+    color: '#4a5568',
+    lineHeight: 22,
+  },
+  
+  // About Section
+  aboutContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  aboutImage: {
+    flex: 1,
+    minWidth: 300,
+    height: 320,
+    borderRadius: 8,
+    marginBottom: 20,
+    marginRight: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+      web: {
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      },
+    }),
+  },
+  aboutContent: {
+    flex: 1,
+    minWidth: 300,
+  },
+  techStack: {
+    marginTop: 20,
+  },
+  techItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  techText: {
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#4F46E5',
+  },
+  
+  // Waitlist Section
+  waitlistSection: {
+    padding: 40,
+    backgroundColor: '#4F46E5',
+  },
+  waitlistTitle: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  waitlistSubtitle: {
+    fontSize: 18,
+    color: 'rgba(255, 255, 255, 0.9)',
+    textAlign: 'center',
+    marginBottom: 40,
+  },
+  formContainer: {
+    maxWidth: 400,
+    width: '100%',
+    alignSelf: 'center',
+  },
+  emailInput: {
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderRadius: 6,
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  submitButton: {
+    backgroundColor: '#ffffff',
+    paddingVertical: 15,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  submitButtonText: {
+    color: '#4F46E5',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  
+  // Footer
+  footer: {
+    backgroundColor: '#1a202c',
+    padding: 40,
+  },
+  footerTop: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 40,
+  },
+  footerCompany: {
+    flex: 2,
+    minWidth: 300,
+    marginBottom: 30,
+  },
+  footerLogo: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginBottom: 12,
+  },
+  footerDescription: {
+    fontSize: 14,
+    color: '#a0aec0',
+    lineHeight: 22,
+    marginBottom: 20,
+    maxWidth: 400,
+  },
+  socialLinks: {
+    flexDirection: 'row',
+  },
+  socialIcon: {
+    marginRight: 16,
+  },
+  footerLinks: {
+    flex: 1,
+    minWidth: 300,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  footerLinkColumn: {
+    minWidth: 120,
+  },
+  footerLinkHeader: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#a0aec0',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 16,
+  },
+  footerLink: {
+    fontSize: 14,
+    color: '#cbd5e0',
+    marginBottom: 10,
+  },
+  footerBottom: {
+    borderTopWidth: 1,
+    borderTopColor: '#2d3748',
+    paddingTop: 20,
+  },
+  copyright: {
+    fontSize: 14,
+    color: '#a0aec0',
+    textAlign: 'center',
+  },
+});
