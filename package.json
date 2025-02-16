@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "concurrently \"next dev --turbo\" \"npm run dev:django\"",
+    "dev:django": "python3 /Users/aryanshah/Downloads/ChasquiLandingPage/Chasqui-Landing-Page/manage.py runserver",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
